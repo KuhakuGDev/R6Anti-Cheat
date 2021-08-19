@@ -14,6 +14,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Windows.Input;
 using System.IO.Compression;
+using System.Threading;
 
 namespace AC_test
 {
@@ -30,6 +31,8 @@ namespace AC_test
 
         int processnumber;
 
+        int currentScan = 0;
+
         string[] cheats = { "Cheat Engine", "injector", "r6", "external", "internal", "hack", "cheat, Rainbow Six", "unknown", "RageIndustries", "Aim", "NoClip" };
         string[] mouseSoftwares = { "SteelSeries GG", "Bloody7", "LGHUB", "LogiOptions", "Logi Overlay", "Logitech Options", "Razer", "Hyper" };
 
@@ -41,21 +44,50 @@ namespace AC_test
             this.TransparencyKey = Color.Empty;
         }
 
-        private void StartButton_Click(object sender, EventArgs e)
+        private void StartAhook(object sender, EventArgs e)
         {
-            ScanBar.Visible = true;
-            ScanBar.Value = 0;
-            CheckBan();
+            isActivated = !isActivated;
+            Status.Checked = isActivated;
 
-            label1.Text = "1";
-            //Get process list
-            processList = Process.GetProcesses();
+            if (isActivated)
+            {
+                R6Scan.Enabled = true;
+                FirstScan();
+                SecondScan();
+                ThirdScan();
+                FourthScan();
+            }
 
-            processnumber = Process.GetProcesses().Count();
+        }
 
-            SaveProcess();
-            //SaveProcess(processListString);
-            //Start Anti-Cheat
+        private void RandomScan(object sender, EventArgs e)
+        {
+            switch (currentScan)
+            {
+                case 0:
+                    FirstScan();
+                    currentScan++;
+                    break;
+                case 1:
+                    SecondScan();
+                    currentScan++;
+                    break;
+                case 2:
+                    ThirdScan();
+                    currentScan++;
+                    break;
+                case 3:
+                    FourthScan();
+                    currentScan = 0;
+                    break;
+            }
+        }
+
+
+        private void FirstScan()
+        {
+            OnStartScan();
+            //SaveProcess();
             if (isActivated && !isBanned)
             {
                 ScanBar.Maximum = processnumber;
@@ -76,13 +108,7 @@ namespace AC_test
                                         process.Kill();
                                         Advice("Has sido baneado del servicio. Motivo", process);
                                         isBanned = true;
-
-                                    }
-                                    else if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
-                                    {
-                                        process.Kill();
-                                        Advice("Has sido baneado del servicio. Motivo", process);
-                                        isBanned = true;
+                                        break;
                                     }
                                 }
                                 catch { }
@@ -93,23 +119,58 @@ namespace AC_test
                     }
                     catch { }
 
-
+                    Thread.Sleep(10);
                 }
             }
             ScanBar.Visible = false;
         }
 
-        private void SecondScan(object sender, EventArgs e)
+        private void SecondScan()
         {
 
-            label1.Text = "2";
-            ScanBar.Visible = true;
-            ScanBar.Value = 0;
-            CheckBan();
+            OnStartScan();
 
+            if (isActivated && !isBanned)
+            {
+                ScanBar.Maximum = processnumber;
+                foreach (Process process in processList)
+                {
+                    try
+                    {
+                        if (process.ToString() != "System.Diagnostics.Process (R6AC)" && process.MainModule.FileVersionInfo.FileDescription != "Rainbow Six")
+                        {
+                            ScanBar.Value++;
 
-            //Get process list
-            processList = Process.GetProcesses();
+                            foreach (string cheat in cheats)
+                            {
+                                try
+                                {
+                                    if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
+                                    {
+                                        process.Kill();
+                                        Advice("Has sido baneado del servicio. Motivo", process);
+                                        isBanned = true;
+                                        break;
+                                    }
+                                }
+                                catch { }
+                            }
+
+                        }
+
+                    }
+                    catch { }
+
+                    Thread.Sleep(10);
+                }
+            }
+            ScanBar.Visible = false;
+        }
+
+        private void ThirdScan()
+        {
+
+            OnStartScan();
 
             if (isActivated && !isBanned)
             {
@@ -136,22 +197,17 @@ namespace AC_test
                         catch { }
                     }
                     ScanBar.Visible = false;
+
+                    Thread.Sleep(10);
                 }
             }
 
         }
 
-        private void thirdScan(object sender, EventArgs e)
+        private void FourthScan()
         {
+            OnStartScan();
 
-            label1.Text = "3";
-            ScanBar.Visible = true;
-            ScanBar.Value = 0;
-            CheckBan();
-
-
-            //Get process list
-            processList = Process.GetProcesses();
             //Kill CMD
             if (isActivated && !isBanned)
             {
@@ -184,6 +240,7 @@ namespace AC_test
                     catch { }
                 }
                 ScanBar.Visible = false;
+                Thread.Sleep(10);
             }
 
         }
@@ -200,24 +257,23 @@ namespace AC_test
                         if (process.MainModule.FileVersionInfo.FileDescription == "Rainbow Six")
                         {
                             R6 = process;
+                            R6Scan.Enabled = false;
                         }
                     }
                 }
             }
             catch { }
         }
-        private void StartAhook(object sender, EventArgs e)
+
+        private void OnStartScan()
         {
-            isActivated = !isActivated;
-            Status.Checked = isActivated;
+            ScanBar.Visible = true;
+            ScanBar.Value = 0;
+            CheckBan();
+            //Get process list
+            processList = Process.GetProcesses();
 
-            if(isActivated)
-            {
-                StartButton_Click(sender, e);
-                SecondScan(sender, e);
-                thirdScan(sender, e);
-            }
-
+            processnumber = Process.GetProcesses().Count();
         }
 
         private void SaveProcess()
@@ -240,6 +296,9 @@ namespace AC_test
                 Baneado.Checked = isBanned;
                 isActivated = !isBanned;
                 R6Scan.Enabled = false;
+                RandomScanTimer.Enabled = false;
+                StartButton.Enabled = false;
+                ScanBar.Visible = false;
             }
         }
 

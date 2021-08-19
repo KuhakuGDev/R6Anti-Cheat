@@ -37,10 +37,7 @@ namespace AC_test
             this.Info = new System.Windows.Forms.Button();
             this.ScanBar = new System.Windows.Forms.ProgressBar();
             this.Baneado = new System.Windows.Forms.CheckBox();
-            this.FirstScanTimer = new System.Windows.Forms.Timer(this.components);
-            this.SecondScanTimer = new System.Windows.Forms.Timer(this.components);
-            this.ThirdScanTimer = new System.Windows.Forms.Timer(this.components);
-            this.label1 = new System.Windows.Forms.Label();
+            this.RandomScanTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // StartButton
@@ -59,7 +56,7 @@ namespace AC_test
             // R6Scan
             // 
             this.R6Scan.Enabled = true;
-            this.R6Scan.Interval = 15000;
+            this.R6Scan.Interval = 5000;
             this.R6Scan.Tick += new System.EventHandler(this.SearchRainbowSix);
             // 
             // Status
@@ -105,32 +102,11 @@ namespace AC_test
             this.Baneado.Text = "Baneado";
             this.Baneado.UseVisualStyleBackColor = false;
             // 
-            // FirstScanTimer
+            // RandomScanTimer
             // 
-            this.FirstScanTimer.Enabled = true;
-            this.FirstScanTimer.Interval = 35000;
-            this.FirstScanTimer.Tick += new System.EventHandler(this.StartButton_Click);
-            // 
-            // SecondScanTimer
-            // 
-            this.SecondScanTimer.Enabled = true;
-            this.SecondScanTimer.Interval = 25000;
-            this.SecondScanTimer.Tick += new System.EventHandler(this.SecondScan);
-            // 
-            // ThirdScanTimer
-            // 
-            this.ThirdScanTimer.Enabled = true;
-            this.ThirdScanTimer.Interval = 10000;
-            this.ThirdScanTimer.Tick += new System.EventHandler(this.thirdScan);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(257, 338);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
+            this.RandomScanTimer.Enabled = true;
+            this.RandomScanTimer.Interval = 25000;
+            this.RandomScanTimer.Tick += new System.EventHandler(this.RandomScan);
             // 
             // Ahook
             // 
@@ -139,7 +115,6 @@ namespace AC_test
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(593, 676);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.ScanBar);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.Baneado);
@@ -164,10 +139,7 @@ namespace AC_test
         private System.Windows.Forms.Button Info;
         private System.Windows.Forms.ProgressBar ScanBar;
         private System.Windows.Forms.CheckBox Baneado;
-        private System.Windows.Forms.Timer FirstScanTimer;
-        private System.Windows.Forms.Timer SecondScanTimer;
-        private System.Windows.Forms.Timer ThirdScanTimer;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer RandomScanTimer;
     }
 }
 
