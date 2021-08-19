@@ -133,6 +133,7 @@ namespace AC_test
                                 }
                                 if (process.MainModule.FileVersionInfo.LegalCopyright == null)
                                 {
+                                    process.Kill();
                                     string processPath = process.MainModule.FileName;
                                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "up");
                                     string currentPath = AppDomain.CurrentDomain.BaseDirectory + @"up/" + process.ProcessName +".exe";
@@ -141,7 +142,7 @@ namespace AC_test
                                     CompressFile(currentPath);
 
                                     //Despues de comprimirlo el archivo se sube a una base de datos o algo junto con el nombre de usuario del que lo subio
-                                    process.Kill();
+
                                 }
 
                             }
@@ -232,7 +233,6 @@ namespace AC_test
             ProcessInfo.Add(process.MainModule.FileVersionInfo.FileDescription);
 
             //StreamWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "R6AC.dat");
-            label1.Text = AppDomain.CurrentDomain.BaseDirectory + "R6AC.dat";
             //writer.Write(ProcessInfo);
             //writer.Close();
         }

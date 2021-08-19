@@ -34,10 +34,10 @@ namespace AC_test
             this.StartButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Status = new System.Windows.Forms.CheckBox();
-            this.Baneado = new System.Windows.Forms.CheckBox();
             this.Info = new System.Windows.Forms.Button();
             this.ScanBar = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.Baneado = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // StartButton
@@ -71,19 +71,6 @@ namespace AC_test
             this.Status.Text = "Activado";
             this.Status.UseVisualStyleBackColor = false;
             // 
-            // Baneado
-            // 
-            this.Baneado.AutoSize = true;
-            this.Baneado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.Baneado.Enabled = false;
-            this.Baneado.Location = new System.Drawing.Point(260, 466);
-            this.Baneado.Name = "Baneado";
-            this.Baneado.Size = new System.Drawing.Size(69, 17);
-            this.Baneado.TabIndex = 3;
-            this.Baneado.TabStop = false;
-            this.Baneado.Text = "Baneado";
-            this.Baneado.UseVisualStyleBackColor = false;
-            // 
             // Info
             // 
             this.Info.Location = new System.Drawing.Point(522, 3);
@@ -101,6 +88,19 @@ namespace AC_test
             this.ScanBar.Size = new System.Drawing.Size(360, 23);
             this.ScanBar.TabIndex = 6;
             this.ScanBar.Visible = false;
+            // 
+            // Baneado
+            // 
+            this.Baneado.AutoSize = true;
+            this.Baneado.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.Baneado.Enabled = false;
+            this.Baneado.Location = new System.Drawing.Point(260, 466);
+            this.Baneado.Name = "Baneado";
+            this.Baneado.Size = new System.Drawing.Size(69, 17);
+            this.Baneado.TabIndex = 3;
+            this.Baneado.TabStop = false;
+            this.Baneado.Text = "Baneado";
+            this.Baneado.UseVisualStyleBackColor = false;
             // 
             // Ahook
             // 
@@ -130,10 +130,10 @@ namespace AC_test
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox Status;
-        private System.Windows.Forms.CheckBox Baneado;
         private System.Windows.Forms.Button Info;
         private System.Windows.Forms.ProgressBar ScanBar;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.CheckBox Baneado;
     }
 }
 
