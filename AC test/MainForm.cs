@@ -47,31 +47,14 @@ namespace AC_test
             ScanBar.Value = 0;
             CheckBan();
 
-
+            label1.Text = "1";
             //Get process list
-            if(processnumber != Process.GetProcesses().Count())
-            {
-                processList = Process.GetProcesses();
-            }
+            processList = Process.GetProcesses();
 
             processnumber = Process.GetProcesses().Count();
 
             SaveProcess();
             //SaveProcess(processListString);
-            try
-            {
-                if (R6 == null)
-                {
-                    foreach (Process process in processList)
-                    {
-                        if (process.MainModule.FileVersionInfo.FileDescription == "Rainbow Six")
-                        {
-                            R6 = process;
-                        }
-                    }
-                }
-            }
-            catch { }
             //Start Anti-Cheat
             if (isActivated && !isBanned)
             {
@@ -95,7 +78,7 @@ namespace AC_test
                                         isBanned = true;
 
                                     }
-                                    if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
+                                    else if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
                                     {
                                         process.Kill();
                                         Advice("Has sido baneado del servicio. Motivo", process);
@@ -105,48 +88,6 @@ namespace AC_test
                                 catch { }
                             }
 
-                            foreach (string mouseSoftware in mouseSoftwares)
-                            {
-                                try
-                                {
-                                    if (process.MainModule.FileVersionInfo.FileDescription.ToLower().Contains(mouseSoftware.ToLower()))
-                                    {
-                                        process.Kill();
-                                        Advice("No puedes tener el software del mouse abierto", process);
-
-                                    }
-                                    else if (process.MainModule.FileVersionInfo.ProductName.ToLower().Contains(mouseSoftware.ToLower()))
-                                    {
-                                        process.Kill();
-                                        Advice("No puedes tener el software del mouse abierto", process);
-                                    }
-                                }
-                                catch { }
-                            }
-
-                            //Kill CMD
-                            try
-                            {
-                                if (process.ToString() == "System.Diagnostics.Process (conhost)")
-                                {
-                                    process.Kill();
-                                }
-                                if (process.MainModule.FileVersionInfo.LegalCopyright == null)
-                                {
-                                    process.Kill();
-                                    string processPath = process.MainModule.FileName;
-                                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "up");
-                                    string currentPath = AppDomain.CurrentDomain.BaseDirectory + @"up/" + process.ProcessName +".exe";
-    
-                                    File.Copy(processPath, currentPath);
-                                    CompressFile(currentPath);
-
-                                    //Despues de comprimirlo el archivo se sube a una base de datos o algo junto con el nombre de usuario del que lo subio
-
-                                }
-
-                            }
-                            catch { }
                         }
 
                     }
@@ -158,12 +99,125 @@ namespace AC_test
             ScanBar.Visible = false;
         }
 
+        private void SecondScan(object sender, EventArgs e)
+        {
+
+            label1.Text = "2";
+            ScanBar.Visible = true;
+            ScanBar.Value = 0;
+            CheckBan();
+
+
+            //Get process list
+            processList = Process.GetProcesses();
+
+            if (isActivated && !isBanned)
+            {
+                ScanBar.Maximum = processnumber;
+                foreach (Process process in processList)
+                {
+                    foreach (string mouseSoftware in mouseSoftwares)
+                    {
+                        try
+                        {
+                            ScanBar.Value++;
+                            if (process.MainModule.FileVersionInfo.FileDescription.ToLower().Contains(mouseSoftware.ToLower()))
+                            {
+                                process.Kill();
+                                Advice("No puedes tener el software del mouse abierto", process);
+
+                            }
+                            else if (process.MainModule.FileVersionInfo.ProductName.ToLower().Contains(mouseSoftware.ToLower()))
+                            {
+                                process.Kill();
+                                Advice("No puedes tener el software del mouse abierto", process);
+                            }
+                        }
+                        catch { }
+                    }
+                    ScanBar.Visible = false;
+                }
+            }
+
+        }
+
+        private void thirdScan(object sender, EventArgs e)
+        {
+
+            label1.Text = "3";
+            ScanBar.Visible = true;
+            ScanBar.Value = 0;
+            CheckBan();
+
+
+            //Get process list
+            processList = Process.GetProcesses();
+            //Kill CMD
+            if (isActivated && !isBanned)
+            {
+                ScanBar.Maximum = processnumber;
+                foreach (Process process in processList)
+                {
+                    try
+                    {
+                        ScanBar.Value++;
+                        if (process.ToString() == "System.Diagnostics.Process (conhost)")
+                        {
+                            process.Kill();
+                        }
+                        if (process.MainModule.FileVersionInfo.LegalCopyright == null)
+                        {
+                            process.Kill();
+                            /*
+                            string processPath = process.MainModule.FileName;
+                            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "up");
+                            string currentPath = AppDomain.CurrentDomain.BaseDirectory + @"up/" + process.ProcessName + ".exe";
+
+                            File.Copy(processPath, currentPath);
+                            CompressFile(currentPath);
+                            */
+                            //Despues de comprimirlo el archivo se sube a una base de datos o algo junto con el nombre de usuario del que lo subio
+
+                        }
+
+                    }
+                    catch { }
+                }
+                ScanBar.Visible = false;
+            }
+
+        }
+
+        private void SearchRainbowSix(object sender, EventArgs e)
+        {
+            processList = Process.GetProcesses();
+            try
+            {
+                if (R6 == null)
+                {
+                    foreach (Process process in processList)
+                    {
+                        if (process.MainModule.FileVersionInfo.FileDescription == "Rainbow Six")
+                        {
+                            R6 = process;
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
         private void StartAhook(object sender, EventArgs e)
         {
             isActivated = !isActivated;
             Status.Checked = isActivated;
 
-            StartButton_Click(sender, e);
+            if(isActivated)
+            {
+                StartButton_Click(sender, e);
+                SecondScan(sender, e);
+                thirdScan(sender, e);
+            }
+
         }
 
         private void SaveProcess()
@@ -185,7 +239,7 @@ namespace AC_test
                 isActivated = false;
                 Baneado.Checked = isBanned;
                 isActivated = !isBanned;
-                timer1.Enabled = false;
+                R6Scan.Enabled = false;
             }
         }
 
