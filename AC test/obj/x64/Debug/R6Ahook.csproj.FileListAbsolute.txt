@@ -1,0 +1,17 @@
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\R6AC.exe.config
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\R6AC.exe
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\R6AC.pdb
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\Memory.dll
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\System.Security.Principal.Windows.dll
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\Memory.xml
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\bin\x64\Debug\System.Security.Principal.Windows.xml
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6Ahook.csproj.AssemblyReference.cache
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\AC_test.InfoForm.resources
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\AC_test.Ahook.resources
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\AC_test.Properties.Resources.resources
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6Ahook.csproj.GenerateResource.cache
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6Ahook.csproj.CoreCompileInputs.cache
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6Ahook.csproj.CopyComplete
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6AC.exe
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\R6AC.pdb
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\x64\Debug\AC_test.Stats.resources

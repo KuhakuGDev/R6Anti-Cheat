@@ -20,3 +20,4 @@ C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\Debug\R6Ahook.csproj.
 C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\Debug\R6Ahook.csproj.CoreCompileInputs.cache
 C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\Debug\R6AC.exe
 C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\Debug\R6AC.pdb
+C:\Users\Ale\source\repos\AC test\R6Anti-Cheat\AC test\obj\Debug\R6Ahook.csproj.CopyComplete

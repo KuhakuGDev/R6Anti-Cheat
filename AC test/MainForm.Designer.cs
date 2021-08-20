@@ -38,6 +38,11 @@ namespace AC_test
             this.ScanBar = new System.Windows.Forms.ProgressBar();
             this.Baneado = new System.Windows.Forms.CheckBox();
             this.RandomScanTimer = new System.Windows.Forms.Timer(this.components);
+            this.FollowR6 = new System.Windows.Forms.CheckBox();
+            this.R6Button = new System.Windows.Forms.Button();
+            this.Stats = new System.Windows.Forms.Timer(this.components);
+            this.StatsShow = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // StartButton
@@ -73,7 +78,7 @@ namespace AC_test
             // 
             // Info
             // 
-            this.Info.Location = new System.Drawing.Point(522, 3);
+            this.Info.Location = new System.Drawing.Point(0, 0);
             this.Info.Name = "Info";
             this.Info.Size = new System.Drawing.Size(68, 40);
             this.Info.TabIndex = 4;
@@ -108,6 +113,51 @@ namespace AC_test
             this.RandomScanTimer.Interval = 25000;
             this.RandomScanTimer.Tick += new System.EventHandler(this.RandomScan);
             // 
+            // FollowR6
+            // 
+            this.FollowR6.AutoSize = true;
+            this.FollowR6.Location = new System.Drawing.Point(46, 466);
+            this.FollowR6.Name = "FollowR6";
+            this.FollowR6.Size = new System.Drawing.Size(70, 17);
+            this.FollowR6.TabIndex = 8;
+            this.FollowR6.Text = "R6Follow";
+            this.FollowR6.UseVisualStyleBackColor = true;
+            // 
+            // R6Button
+            // 
+            this.R6Button.Location = new System.Drawing.Point(46, 511);
+            this.R6Button.Name = "R6Button";
+            this.R6Button.Size = new System.Drawing.Size(75, 23);
+            this.R6Button.TabIndex = 9;
+            this.R6Button.Text = "R6...";
+            this.R6Button.UseVisualStyleBackColor = true;
+            this.R6Button.Click += new System.EventHandler(this.R6Select_Click);
+            // 
+            // Stats
+            // 
+            this.Stats.Enabled = true;
+            this.Stats.Interval = 1000;
+            this.Stats.Tick += new System.EventHandler(this.GetKills);
+            // 
+            // StatsShow
+            // 
+            this.StatsShow.Location = new System.Drawing.Point(518, 0);
+            this.StatsShow.Name = "StatsShow";
+            this.StatsShow.Size = new System.Drawing.Size(75, 40);
+            this.StatsShow.TabIndex = 10;
+            this.StatsShow.Text = "Stats";
+            this.StatsShow.UseVisualStyleBackColor = true;
+            this.StatsShow.Click += new System.EventHandler(this.StatsShow_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(280, 283);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "label1";
+            // 
             // Ahook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -115,6 +165,10 @@ namespace AC_test
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(593, 676);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.StatsShow);
+            this.Controls.Add(this.R6Button);
+            this.Controls.Add(this.FollowR6);
             this.Controls.Add(this.ScanBar);
             this.Controls.Add(this.Info);
             this.Controls.Add(this.Baneado);
@@ -140,6 +194,11 @@ namespace AC_test
         private System.Windows.Forms.ProgressBar ScanBar;
         private System.Windows.Forms.CheckBox Baneado;
         private System.Windows.Forms.Timer RandomScanTimer;
+        private System.Windows.Forms.CheckBox FollowR6;
+        private System.Windows.Forms.Button R6Button;
+        private System.Windows.Forms.Timer Stats;
+        private System.Windows.Forms.Button StatsShow;
+        private System.Windows.Forms.Label label1;
     }
 }
 

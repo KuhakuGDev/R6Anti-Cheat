@@ -67,7 +67,7 @@ namespace AC_test
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "V0.8";
+            this.label2.Text = "V0.9";
             // 
             // InfoForm
             // 

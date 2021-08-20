@@ -15,11 +15,14 @@ using System.Runtime.Serialization;
 using System.Windows.Input;
 using System.IO.Compression;
 using System.Threading;
+using Memory;
 
 namespace AC_test
 {
     public partial class Ahook : Form
     {
+        //MemoryRead
+        public Mem m = new Mem();
         //Variables
         bool isActivated = false;
         bool isBanned = false;
@@ -29,14 +32,23 @@ namespace AC_test
 
         public string loginDatPath;
 
+        public string R6Path;
+
+
         int processnumber;
 
         int currentScan = 0;
 
-        string[] cheats = { "Cheat Engine", "injector", "r6", "external", "internal", "hack", "cheat, Rainbow Six", "unknown", "RageIndustries", "Aim", "NoClip" };
+        string[] cheats = { "injector", "r6", "external", "internal", "hack", "Rainbow Six", "unknown", "RageIndustries", "Aim", "NoClip" };
         string[] mouseSoftwares = { "SteelSeries GG", "Bloody7", "LGHUB", "LogiOptions", "Logi Overlay", "Logitech Options", "Razer", "Hyper" };
 
         List<string> ProcessInfo;
+
+
+        //Stats
+        public float kills = 0, death = 0;
+
+        float Killsvalue;
         public Ahook()
         {
             //LoadData();
@@ -248,21 +260,26 @@ namespace AC_test
         private void SearchRainbowSix(object sender, EventArgs e)
         {
             processList = Process.GetProcesses();
-            try
+            if (R6 == null && R6Path != "")
             {
-                if (R6 == null)
+                foreach (Process process in processList)
                 {
-                    foreach (Process process in processList)
+                    try
                     {
-                        if (process.MainModule.FileVersionInfo.FileDescription == "Rainbow Six")
+                        if (process.MainModule.FileName == R6Path)
                         {
+                            FollowR6.Checked = true;
                             R6 = process;
                             R6Scan.Enabled = false;
+
                         }
                     }
+                    catch {}
+
+
                 }
+
             }
-            catch { }
         }
 
         private void OnStartScan()
@@ -348,6 +365,67 @@ namespace AC_test
             //StreamWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "R6AC.dat");
             //writer.Write(ProcessInfo);
             //writer.Close();
+        }
+
+        private void GetKills(object sender, EventArgs e)
+        {
+            if(R6 != null)
+            {
+
+                //Kills
+                VAMemory vam = new VAMemory(R6.ProcessName);
+
+                IntPtr Base = R6.MainModule.BaseAddress + 0x05EF5478;
+                IntPtr Basefirst = IntPtr.Add((IntPtr)vam.ReadInt64(Base), 0x10);
+                IntPtr Basesecond = IntPtr.Add((IntPtr)vam.ReadInt64(Basefirst), 0xA8);
+                IntPtr Basethird = IntPtr.Add((IntPtr)vam.ReadInt64(Basesecond), 0x10);
+                IntPtr Basefourth = IntPtr.Add((IntPtr)vam.ReadInt64(Basethird), 0x8);
+                IntPtr Basefifth = IntPtr.Add((IntPtr)vam.ReadInt64(Basefourth), 0x8);
+                IntPtr Basesixth = IntPtr.Add((IntPtr)vam.ReadInt64(Basefifth), 0x38);
+                IntPtr Baseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(Basesixth), 0x1E0);
+
+                if (vam.ReadInt64(Baseseventh) == 0)
+                {
+                    kills += Killsvalue; 
+                }
+
+                Killsvalue = vam.ReadInt64(Baseseventh);
+
+
+                label1.Text = kills + "/" + Killsvalue;
+            }
+            if(!isActivated)
+            {
+                ScanBar.Visible = false;
+            }
+        }
+
+        private void R6Select_Click(object sender, EventArgs e)
+        {
+            int size = -1;
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            DialogResult result = openFileDialog1.ShowDialog(); // Show the dialog.
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = openFileDialog1.FileName;
+                try
+                {
+                    string text = File.ReadAllText(file);
+                    size = text.Length;
+                    R6Path = file;
+
+                }
+                catch (IOException)
+                {
+                }
+            }
+        }
+
+        private void StatsShow_Click(object sender, EventArgs e)
+        {
+            Stats stats = new Stats(this);
+
+            stats.Show();
         }
     }
 }
