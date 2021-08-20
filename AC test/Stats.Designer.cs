@@ -35,6 +35,8 @@ namespace AC_test
             this.KillsText = new System.Windows.Forms.Label();
             this.StatsText = new System.Windows.Forms.Label();
             this.StatsTimer = new System.Windows.Forms.Timer(this.components);
+            this.DeathsText = new System.Windows.Forms.Label();
+            this.KDText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -74,12 +76,36 @@ namespace AC_test
             this.StatsTimer.Interval = 1000;
             this.StatsTimer.Tick += new System.EventHandler(this.StatsTimer_Tick);
             // 
+            // DeathsText
+            // 
+            this.DeathsText.AutoSize = true;
+            this.DeathsText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeathsText.ForeColor = System.Drawing.SystemColors.Window;
+            this.DeathsText.Location = new System.Drawing.Point(13, 87);
+            this.DeathsText.Name = "DeathsText";
+            this.DeathsText.Size = new System.Drawing.Size(65, 20);
+            this.DeathsText.TabIndex = 3;
+            this.DeathsText.Text = "Deaths:";
+            // 
+            // KDText
+            // 
+            this.KDText.AutoSize = true;
+            this.KDText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KDText.ForeColor = System.Drawing.Color.SeaShell;
+            this.KDText.Location = new System.Drawing.Point(14, 130);
+            this.KDText.Name = "KDText";
+            this.KDText.Size = new System.Drawing.Size(39, 20);
+            this.KDText.TabIndex = 4;
+            this.KDText.Text = "KD: ";
+            // 
             // Stats
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(371, 517);
+            this.Controls.Add(this.KDText);
+            this.Controls.Add(this.DeathsText);
             this.Controls.Add(this.StatsText);
             this.Controls.Add(this.KillsText);
             this.Controls.Add(this.label1);
@@ -97,5 +123,7 @@ namespace AC_test
         private System.Windows.Forms.Label StatsText;
         public System.Windows.Forms.Label KillsText;
         private System.Windows.Forms.Timer StatsTimer;
+        private System.Windows.Forms.Label DeathsText;
+        private System.Windows.Forms.Label KDText;
     }
 }

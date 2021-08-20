@@ -22,7 +22,14 @@ namespace AC_test
 
         private void StatsTimer_Tick(object sender, EventArgs e)
         {
+            if(a.kills > 0 && a.deaths > 0)
+            {
+                a.kd =(float)a.kills / a.deaths;
+                a.kd = Math.Round(a.kd, 1);
+            }
             KillsText.Text = "Kills: " + a.kills;
+            DeathsText.Text = "Deaths: " + a.deaths;
+            KDText.Text = "KD: " + a.kd;
         }
     }
 }

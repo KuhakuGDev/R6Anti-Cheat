@@ -46,9 +46,10 @@ namespace AC_test
 
 
         //Stats
-        public float kills = 0, death = 0;
+        public int kills = 6, deaths = 5;
+        public double kd;
 
-        float Killsvalue;
+        int Killsvalue, deathsvalue;
         public Ahook()
         {
             //LoadData();
@@ -375,24 +376,46 @@ namespace AC_test
                 //Kills
                 VAMemory vam = new VAMemory(R6.ProcessName);
 
-                IntPtr Base = R6.MainModule.BaseAddress + 0x05EF5478;
-                IntPtr Basefirst = IntPtr.Add((IntPtr)vam.ReadInt64(Base), 0x10);
-                IntPtr Basesecond = IntPtr.Add((IntPtr)vam.ReadInt64(Basefirst), 0xA8);
-                IntPtr Basethird = IntPtr.Add((IntPtr)vam.ReadInt64(Basesecond), 0x10);
-                IntPtr Basefourth = IntPtr.Add((IntPtr)vam.ReadInt64(Basethird), 0x8);
-                IntPtr Basefifth = IntPtr.Add((IntPtr)vam.ReadInt64(Basefourth), 0x8);
-                IntPtr Basesixth = IntPtr.Add((IntPtr)vam.ReadInt64(Basefifth), 0x38);
-                IntPtr Baseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(Basesixth), 0x1E0);
+                IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05EF5478;
+                IntPtr KillsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBase), 0x10);
+                IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0xA8);
+                IntPtr KillsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesecond), 0x10);
+                IntPtr KillsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasethird), 0x8);
+                IntPtr KillsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefourth), 0x8);
+                IntPtr KillsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefifth), 0x38);
+                IntPtr KillsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesixth), 0x1E0);
 
-                if (vam.ReadInt64(Baseseventh) == 0)
+                if (vam.ReadInt64(KillsBaseseventh) == 0 && Killsvalue > 0.1 && Killsvalue < 25)
                 {
                     kills += Killsvalue; 
                 }
+                if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
+                {
+                    Killsvalue = (int)vam.ReadInt64(KillsBaseseventh);
+                }
 
-                Killsvalue = vam.ReadInt64(Baseseventh);
 
 
-                label1.Text = kills + "/" + Killsvalue;
+                //Deaths
+                IntPtr DeathsBase = R6.MainModule.BaseAddress + 0x08267040;
+                IntPtr DeathsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBase), 0x70);
+                IntPtr DeathsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefirst), 0x6E8);
+                IntPtr DeathsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesecond), 0x0);
+                IntPtr DeathsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasethird), 0xF8);
+                IntPtr DeathsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefourth), 0x0);
+                IntPtr DeathsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefifth), 0x20);
+                IntPtr DeathsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesixth), 0x70);
+
+                if (vam.ReadInt64(DeathsBaseseventh) == 0 && deathsvalue > 0.1 && deathsvalue < 25)
+                {
+                    deaths += deathsvalue;
+                }
+                if((int)vam.ReadInt64(DeathsBaseseventh) >= 0 && (int)vam.ReadInt64(DeathsBaseseventh) < 25)
+                {
+                    deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
+                }
+
+                //label1.Text = kills + "/" + Killsvalue + " " + deaths + "/" + deathsvalue;
             }
             if(!isActivated)
             {
