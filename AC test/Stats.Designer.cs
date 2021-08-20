@@ -37,6 +37,10 @@ namespace AC_test
             this.StatsTimer = new System.Windows.Forms.Timer(this.components);
             this.DeathsText = new System.Windows.Forms.Label();
             this.KDText = new System.Windows.Forms.Label();
+            this.VictoriasText = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.DerrotasText = new System.Windows.Forms.Label();
+            this.WinRateText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -98,12 +102,58 @@ namespace AC_test
             this.KDText.TabIndex = 4;
             this.KDText.Text = "KD: ";
             // 
+            // VictoriasText
+            // 
+            this.VictoriasText.AutoSize = true;
+            this.VictoriasText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VictoriasText.ForeColor = System.Drawing.SystemColors.Control;
+            this.VictoriasText.Location = new System.Drawing.Point(12, 172);
+            this.VictoriasText.Name = "VictoriasText";
+            this.VictoriasText.Size = new System.Drawing.Size(74, 20);
+            this.VictoriasText.TabIndex = 5;
+            this.VictoriasText.Text = "Victorias:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "label3";
+            // 
+            // DerrotasText
+            // 
+            this.DerrotasText.AutoSize = true;
+            this.DerrotasText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DerrotasText.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.DerrotasText.Location = new System.Drawing.Point(15, 219);
+            this.DerrotasText.Name = "DerrotasText";
+            this.DerrotasText.Size = new System.Drawing.Size(75, 20);
+            this.DerrotasText.TabIndex = 7;
+            this.DerrotasText.Text = "Derrotas:";
+            // 
+            // WinRateText
+            // 
+            this.WinRateText.AutoSize = true;
+            this.WinRateText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinRateText.ForeColor = System.Drawing.Color.Snow;
+            this.WinRateText.Location = new System.Drawing.Point(18, 260);
+            this.WinRateText.Name = "WinRateText";
+            this.WinRateText.Size = new System.Drawing.Size(79, 20);
+            this.WinRateText.TabIndex = 8;
+            this.WinRateText.Text = "WinRate: ";
+            // 
             // Stats
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(371, 517);
+            this.Controls.Add(this.WinRateText);
+            this.Controls.Add(this.DerrotasText);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.VictoriasText);
             this.Controls.Add(this.KDText);
             this.Controls.Add(this.DeathsText);
             this.Controls.Add(this.StatsText);
@@ -125,5 +175,9 @@ namespace AC_test
         private System.Windows.Forms.Timer StatsTimer;
         private System.Windows.Forms.Label DeathsText;
         private System.Windows.Forms.Label KDText;
+        private System.Windows.Forms.Label VictoriasText;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label DerrotasText;
+        private System.Windows.Forms.Label WinRateText;
     }
 }

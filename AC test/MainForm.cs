@@ -46,10 +46,10 @@ namespace AC_test
 
 
         //Stats
-        public int kills = 6, deaths = 5;
-        public double kd;
+        public int kills = 20, deaths = 17, victories = 7, loses = 5;
+        public double kd, wr;
 
-        int Killsvalue, deathsvalue;
+        int Killsvalue, deathsvalue, resultvalue;
         public Ahook()
         {
             //LoadData();
@@ -372,10 +372,21 @@ namespace AC_test
         {
             if(R6 != null)
             {
-
-                //Kills
                 VAMemory vam = new VAMemory(R6.ProcessName);
 
+                //Victory or Lose
+                IntPtr resultBase = R6.MainModule.BaseAddress + 0x06098BE0;
+                IntPtr resultBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(resultBase), 0x80);
+                IntPtr resultBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefirst), 0xB8);
+                IntPtr resultBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesecond), 0x78);
+                IntPtr resultBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasethird), 0x20);
+                IntPtr resultBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefourth), 0x390);
+                IntPtr resultBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefifth), 0x18);
+                IntPtr resultBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesixth), 0x19C);
+
+                resultvalue = (int)vam.ReadInt64(resultBaseseventh);
+
+                //Kills
                 IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05EF5478;
                 IntPtr KillsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBase), 0x10);
                 IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0xA8);
@@ -387,7 +398,15 @@ namespace AC_test
 
                 if (vam.ReadInt64(KillsBaseseventh) == 0 && Killsvalue > 0.1 && Killsvalue < 25)
                 {
-                    kills += Killsvalue; 
+                    kills += Killsvalue;
+                    if(resultvalue == 0)
+                    {
+                        loses++;
+                    }
+                    if(resultvalue == 1)
+                    {
+                        victories++;
+                    }
                 }
                 if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
                 {
@@ -415,7 +434,10 @@ namespace AC_test
                     deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
                 }
 
-                //label1.Text = kills + "/" + Killsvalue + " " + deaths + "/" + deathsvalue;
+
+
+
+                label1.Text = victories + "/" + resultvalue;
             }
             if(!isActivated)
             {

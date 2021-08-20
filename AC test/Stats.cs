@@ -30,6 +30,14 @@ namespace AC_test
             KillsText.Text = "Kills: " + a.kills;
             DeathsText.Text = "Deaths: " + a.deaths;
             KDText.Text = "KD: " + a.kd;
+            VictoriasText.Text = "Victorias: " + a.victories;
+            DerrotasText.Text = "Derrotas: " + a.loses;
+            if(a.victories > 0 && a.loses > 0)
+            {
+                a.wr = (float)a.victories / a.loses;
+                a.wr = Math.Round(a.wr, 1);
+            }
+            WinRateText.Text = "WinRate: " + a.wr;
         }
     }
 }

@@ -42,6 +42,7 @@ namespace AC_test
             this.R6Button = new System.Windows.Forms.Button();
             this.Stats = new System.Windows.Forms.Timer(this.components);
             this.StatsShow = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // StartButton
@@ -148,6 +149,15 @@ namespace AC_test
             this.StatsShow.UseVisualStyleBackColor = true;
             this.StatsShow.Click += new System.EventHandler(this.StatsShow_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(281, 307);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "label1";
+            // 
             // Ahook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -155,6 +165,7 @@ namespace AC_test
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(593, 676);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.StatsShow);
             this.Controls.Add(this.R6Button);
             this.Controls.Add(this.FollowR6);
@@ -187,6 +198,7 @@ namespace AC_test
         private System.Windows.Forms.Button R6Button;
         private System.Windows.Forms.Timer Stats;
         private System.Windows.Forms.Button StatsShow;
+        private System.Windows.Forms.Label label1;
     }
 }
 
