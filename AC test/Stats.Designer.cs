@@ -31,7 +31,6 @@ namespace AC_test
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Stats));
-            this.label1 = new System.Windows.Forms.Label();
             this.KillsText = new System.Windows.Forms.Label();
             this.StatsText = new System.Windows.Forms.Label();
             this.StatsTimer = new System.Windows.Forms.Timer(this.components);
@@ -42,16 +41,10 @@ namespace AC_test
             this.DerrotasText = new System.Windows.Forms.Label();
             this.WinRateText = new System.Windows.Forms.Label();
             this.MMRText = new System.Windows.Forms.Label();
+            this.RankText = new System.Windows.Forms.Label();
+            this.RankImage = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.RankImage)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "label1";
             // 
             // KillsText
             // 
@@ -128,7 +121,7 @@ namespace AC_test
             this.DerrotasText.AutoSize = true;
             this.DerrotasText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DerrotasText.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.DerrotasText.Location = new System.Drawing.Point(15, 219);
+            this.DerrotasText.Location = new System.Drawing.Point(11, 219);
             this.DerrotasText.Name = "DerrotasText";
             this.DerrotasText.Size = new System.Drawing.Size(75, 20);
             this.DerrotasText.TabIndex = 7;
@@ -139,7 +132,7 @@ namespace AC_test
             this.WinRateText.AutoSize = true;
             this.WinRateText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WinRateText.ForeColor = System.Drawing.Color.Snow;
-            this.WinRateText.Location = new System.Drawing.Point(18, 260);
+            this.WinRateText.Location = new System.Drawing.Point(11, 261);
             this.WinRateText.Name = "WinRateText";
             this.WinRateText.Size = new System.Drawing.Size(79, 20);
             this.WinRateText.TabIndex = 8;
@@ -150,11 +143,32 @@ namespace AC_test
             this.MMRText.AutoSize = true;
             this.MMRText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MMRText.ForeColor = System.Drawing.Color.Snow;
-            this.MMRText.Location = new System.Drawing.Point(18, 300);
+            this.MMRText.Location = new System.Drawing.Point(128, 468);
             this.MMRText.Name = "MMRText";
             this.MMRText.Size = new System.Drawing.Size(55, 20);
             this.MMRText.TabIndex = 9;
             this.MMRText.Text = "MMR: ";
+            // 
+            // RankText
+            // 
+            this.RankText.AutoSize = true;
+            this.RankText.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RankText.ForeColor = System.Drawing.Color.Snow;
+            this.RankText.Location = new System.Drawing.Point(139, 420);
+            this.RankText.Name = "RankText";
+            this.RankText.Size = new System.Drawing.Size(69, 25);
+            this.RankText.TabIndex = 10;
+            this.RankText.Text = "Rango";
+            // 
+            // RankImage
+            // 
+            this.RankImage.Image = global::AC_test.Properties.Resources.Bronze_1;
+            this.RankImage.InitialImage = global::AC_test.Properties.Resources.Bronze_1;
+            this.RankImage.Location = new System.Drawing.Point(122, 281);
+            this.RankImage.Name = "RankImage";
+            this.RankImage.Size = new System.Drawing.Size(100, 136);
+            this.RankImage.TabIndex = 11;
+            this.RankImage.TabStop = false;
             // 
             // Stats
             // 
@@ -162,6 +176,8 @@ namespace AC_test
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(371, 517);
+            this.Controls.Add(this.RankImage);
+            this.Controls.Add(this.RankText);
             this.Controls.Add(this.MMRText);
             this.Controls.Add(this.WinRateText);
             this.Controls.Add(this.DerrotasText);
@@ -171,18 +187,16 @@ namespace AC_test
             this.Controls.Add(this.DeathsText);
             this.Controls.Add(this.StatsText);
             this.Controls.Add(this.KillsText);
-            this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Stats";
             this.Text = "Stats";
+            ((System.ComponentModel.ISupportInitialize)(this.RankImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label StatsText;
         public System.Windows.Forms.Label KillsText;
         private System.Windows.Forms.Timer StatsTimer;
@@ -193,5 +207,7 @@ namespace AC_test
         private System.Windows.Forms.Label DerrotasText;
         private System.Windows.Forms.Label WinRateText;
         private System.Windows.Forms.Label MMRText;
+        private System.Windows.Forms.Label RankText;
+        private System.Windows.Forms.PictureBox RankImage;
     }
 }

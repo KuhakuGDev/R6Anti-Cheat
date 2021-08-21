@@ -44,13 +44,15 @@ namespace AC_test
 
         List<string> ProcessInfo;
 
-        public float MMR = 0;
-
+        public float MMR = 2300;
+      
         //Stats
         public int kills = 20, deaths = 17, victories = 7, loses = 5;
         public double kd, wr, matchKD = 1;
 
-        int Killsvalue, deathsvalue, resultvalue;
+        int Killsvalue, deathsvalue, resultvalue, isPlayingValue;
+
+        public bool isPlaying = false;
         public Ahook()
         {
             //LoadData();
@@ -375,75 +377,96 @@ namespace AC_test
             {
                 VAMemory vam = new VAMemory(R6.ProcessName);
 
-                //Victory or Lose
-                IntPtr resultBase = R6.MainModule.BaseAddress + 0x06098BE0;
-                IntPtr resultBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(resultBase), 0x80);
-                IntPtr resultBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefirst), 0xB8);
-                IntPtr resultBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesecond), 0x78);
-                IntPtr resultBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasethird), 0x20);
-                IntPtr resultBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefourth), 0x390);
-                IntPtr resultBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefifth), 0x18);
-                IntPtr resultBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesixth), 0x19C);
+                //On match?
+                IntPtr matchBase = R6.MainModule.BaseAddress + 0x05AF64F8;
+                IntPtr matchBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(matchBase), 0x70);
+                IntPtr matchBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefirst), 0x28);
+                IntPtr matchBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasesecond), 0x88);
+                IntPtr matchBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasethird), 0x10);
+                IntPtr matchBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefourth), 0x830);
 
-                resultvalue = (int)vam.ReadInt64(resultBaseseventh);
 
-                //Kills
-                IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05EF5478;
-                IntPtr KillsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBase), 0x10);
-                IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0xA8);
-                IntPtr KillsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesecond), 0x10);
-                IntPtr KillsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasethird), 0x8);
-                IntPtr KillsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefourth), 0x8);
-                IntPtr KillsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefifth), 0x38);
-                IntPtr KillsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesixth), 0x1E0);
+                isPlayingValue = (int)vam.ReadInt64(matchBasefifth);
 
-                if (vam.ReadInt64(KillsBaseseventh) == 0 && Killsvalue > 0.1 && Killsvalue < 25)
-                {
-                    kills += Killsvalue;
-                    if(resultvalue == 0)
+                if(isPlayingValue == 1)
+                {      
+                    //Victory or Lose
+                    IntPtr resultBase = R6.MainModule.BaseAddress + 0x06098BE0;
+                    IntPtr resultBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(resultBase), 0x80);
+                    IntPtr resultBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefirst), 0xB8);
+                    IntPtr resultBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesecond), 0x78);
+                    IntPtr resultBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasethird), 0x20);
+                    IntPtr resultBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefourth), 0x390);
+                    IntPtr resultBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasefifth), 0x18);
+                    IntPtr resultBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(resultBasesixth), 0x19C);
+
+                    resultvalue = (int)vam.ReadInt64(resultBaseseventh);
+
+                    //Kills
+                    IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05EF5478;
+                    IntPtr KillsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBase), 0x10);
+                    IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0xA8);
+                    IntPtr KillsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesecond), 0x10);
+                    IntPtr KillsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasethird), 0x8);
+                    IntPtr KillsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefourth), 0x8);
+                    IntPtr KillsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefifth), 0x38);
+                    IntPtr KillsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesixth), 0x1E0);
+
+                    if (vam.ReadInt64(KillsBaseseventh) == 0 && Killsvalue > 0.1 && Killsvalue < 25)
                     {
-                        loses++;
-                        MMR -= 50 * (float)matchKD;
+                        kills += Killsvalue;
+                        if (resultvalue == 0)
+                        {
+                            loses++;
+                            MMR -= 50 * (float)matchKD;
+                        }
+                        if (resultvalue == 1)
+                        {
+                            victories++;
+                            MMR += 50 * (float)matchKD;
+                        }
                     }
-                    if(resultvalue == 1)
+                    if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
                     {
-                        victories++;
-                        MMR += 50 * (float)matchKD;
+                        Killsvalue = (int)vam.ReadInt64(KillsBaseseventh);
                     }
+
+
+
+                    //Deaths
+                    IntPtr DeathsBase = R6.MainModule.BaseAddress + 0x071B7A60;
+                    IntPtr DeathsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBase), 0x10);
+                    IntPtr DeathsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefirst), 0x38);
+                    IntPtr DeathsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesecond), 0x290);
+                    IntPtr DeathsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasethird), 0x0);
+                    IntPtr DeathsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefourth), 0x98);
+                    IntPtr DeathsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefifth), 0x20);
+                    IntPtr DeathsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesixth), 0x70);
+
+                    if (vam.ReadInt64(DeathsBaseseventh) == 0 && deathsvalue > 0.1 && deathsvalue < 25)
+                    {
+                        deaths += deathsvalue;
+                    }
+                    if ((int)vam.ReadInt64(DeathsBaseseventh) >= 0 && (int)vam.ReadInt64(DeathsBaseseventh) < 25)
+                    {
+                        deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
+                    }
+
+                    if (deathsvalue > 0 && Killsvalue > 0)
+                    {
+                        matchKD = kills / deaths;
+                    }
+
+
+                    label1.Text = victories + "/" + resultvalue;
+
                 }
-                if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
+                else
                 {
-                    Killsvalue = (int)vam.ReadInt64(KillsBaseseventh);
+                    label1.Text = "No estas en partida";
                 }
 
 
-
-                //Deaths
-                IntPtr DeathsBase = R6.MainModule.BaseAddress + 0x08267040;
-                IntPtr DeathsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBase), 0x70);
-                IntPtr DeathsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefirst), 0x6E8);
-                IntPtr DeathsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesecond), 0x0);
-                IntPtr DeathsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasethird), 0xF8);
-                IntPtr DeathsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefourth), 0x0);
-                IntPtr DeathsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefifth), 0x20);
-                IntPtr DeathsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesixth), 0x70);
-
-                if (vam.ReadInt64(DeathsBaseseventh) == 0 && deathsvalue > 0.1 && deathsvalue < 25)
-                {
-                    deaths += deathsvalue;
-                }
-                if((int)vam.ReadInt64(DeathsBaseseventh) >= 0 && (int)vam.ReadInt64(DeathsBaseseventh) < 25)
-                {
-                    deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
-                }
-
-                if(deathsvalue > 0 && Killsvalue > 0)
-                {
-                    matchKD = kills / deaths;
-                }
-
-
-                label1.Text = victories + "/" + resultvalue;
             }
             if(!isActivated)
             {

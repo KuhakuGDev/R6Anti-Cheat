@@ -118,6 +118,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Stats.resx">
       <DependentUpon>Stats.cs</DependentUpon>
@@ -139,6 +140,28 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="4knclf04fcr41.ico" />
+    <None Include="Resources\Silver 5.png" />
+    <None Include="Resources\Silver 4.png" />
+    <None Include="Resources\Silver 3.png" />
+    <None Include="Resources\Silver 2.png" />
+    <None Include="Resources\Silver 1.png" />
+    <None Include="Resources\Platinum 3.png" />
+    <None Include="Resources\Platinum 2.png" />
+    <None Include="Resources\Platinum 1.png" />
+    <None Include="Resources\Gold 3.png" />
+    <None Include="Resources\Gold 2.png" />
+    <None Include="Resources\Gold 1.png" />
+    <None Include="Resources\Diamond.png" />
+    <None Include="Resources\copper 5.png" />
+    <None Include="Resources\copper 4.png" />
+    <None Include="Resources\copper 3.png" />
+    <None Include="Resources\copper 2.png" />
+    <None Include="Resources\copper 1.png" />
+    <None Include="Resources\Bronze 5.png" />
+    <None Include="Resources\Bronze 4.png" />
+    <None Include="Resources\Bronze 3.png" />
+    <None Include="Resources\Bronze 2.png" />
+    <None Include="Resources\Bronze 1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
