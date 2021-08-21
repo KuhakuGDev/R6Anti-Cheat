@@ -41,6 +41,7 @@ namespace AC_test
             this.label3 = new System.Windows.Forms.Label();
             this.DerrotasText = new System.Windows.Forms.Label();
             this.WinRateText = new System.Windows.Forms.Label();
+            this.MMRText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -144,12 +145,24 @@ namespace AC_test
             this.WinRateText.TabIndex = 8;
             this.WinRateText.Text = "WinRate: ";
             // 
+            // MMRText
+            // 
+            this.MMRText.AutoSize = true;
+            this.MMRText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MMRText.ForeColor = System.Drawing.Color.Snow;
+            this.MMRText.Location = new System.Drawing.Point(18, 300);
+            this.MMRText.Name = "MMRText";
+            this.MMRText.Size = new System.Drawing.Size(55, 20);
+            this.MMRText.TabIndex = 9;
+            this.MMRText.Text = "MMR: ";
+            // 
             // Stats
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(371, 517);
+            this.Controls.Add(this.MMRText);
             this.Controls.Add(this.WinRateText);
             this.Controls.Add(this.DerrotasText);
             this.Controls.Add(this.label3);
@@ -179,5 +192,6 @@ namespace AC_test
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label DerrotasText;
         private System.Windows.Forms.Label WinRateText;
+        private System.Windows.Forms.Label MMRText;
     }
 }

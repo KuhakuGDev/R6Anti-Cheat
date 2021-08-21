@@ -44,10 +44,11 @@ namespace AC_test
 
         List<string> ProcessInfo;
 
+        public float MMR = 0;
 
         //Stats
         public int kills = 20, deaths = 17, victories = 7, loses = 5;
-        public double kd, wr;
+        public double kd, wr, matchKD = 1;
 
         int Killsvalue, deathsvalue, resultvalue;
         public Ahook()
@@ -402,10 +403,12 @@ namespace AC_test
                     if(resultvalue == 0)
                     {
                         loses++;
+                        MMR -= 50 * (float)matchKD;
                     }
                     if(resultvalue == 1)
                     {
                         victories++;
+                        MMR += 50 * (float)matchKD;
                     }
                 }
                 if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
@@ -434,7 +437,10 @@ namespace AC_test
                     deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
                 }
 
-
+                if(deathsvalue > 0 && Killsvalue > 0)
+                {
+                    matchKD = kills / deaths;
+                }
 
 
                 label1.Text = victories + "/" + resultvalue;

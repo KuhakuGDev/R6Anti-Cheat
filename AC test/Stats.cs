@@ -38,6 +38,7 @@ namespace AC_test
                 a.wr = Math.Round(a.wr, 1);
             }
             WinRateText.Text = "WinRate: " + a.wr;
+            MMRText.Text = "MMR: " + a.MMR;
         }
     }
 }
