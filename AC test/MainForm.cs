@@ -48,7 +48,7 @@ namespace R6AntiCheat
 
         int currentScan = 0;
 
-        string[] cheats = { "Cheat Engine", "Cheat", "injector", "r6", "external", "internal", "hack", "Rainbow Six", "unknown", "RageIndustries", "Aim", "NoClip" };
+        string[] cheats = { };
         string[] mouseSoftwares = { "SteelSeries GG", "Bloody7", "LGHUB", "LogiOptions", "Logi Overlay", "Logitech Options", "Razer", "Hyper" };
 
         List<string> ProcessInfo;
@@ -56,14 +56,14 @@ namespace R6AntiCheat
         public float MMR = 2300;
       
         //Stats
-        public int kills, deaths, deathstemp, victories, loses, killRest, deathrest;
-        public double kd, wr, matchKD = 1, hoursPlayed, minutsPlayed;
+        public int kills, deaths, deathstemp, victories, loses, killRest, deathrest, abandonos, matchKills = 1, matchDeaths = 1;
+        public double kd, wr, hoursPlayed, minutsPlayed, matchTime;
 
         public int Killsvalue, deathsvaluetemp, resultvalue, isPlayingValue, deathvalue;
 
-        public string CurrentRank;
+        public string CurrentRank, playerName;
 
-        public bool addMMR = false;
+        public bool addMMR = false, onMatch = false, started = false;
 
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
@@ -88,6 +88,7 @@ namespace R6AntiCheat
             NewCloseButton.FlatAppearance.BorderColor = BackColor;
             NewMinimizeBut.FlatAppearance.BorderColor = BackColor;
             StartButton.FlatAppearance.BorderSize = 0;
+            StartButton.FlatAppearance.MouseOverBackColor = Color.Black;
             CreateTooltips();
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -203,8 +204,8 @@ namespace R6AntiCheat
                                 {
                                     if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
                                     {
-                                        //process.Kill();
-                                        Advice("Has sido baneado del servicio. Motivo", process);
+                                        process.Kill();
+                                        //Advice("Has sido baneado del servicio. Motivo", process);
                                         //isBanned = true;
                                         break;
                                     }
@@ -241,13 +242,13 @@ namespace R6AntiCheat
                             if (process.MainModule.FileVersionInfo.FileDescription.ToLower().Contains(mouseSoftware.ToLower()))
                             {
                                 process.Kill();
-                                Advice("No puedes tener el software del mouse abierto", process);
+                                //Advice("No puedes tener el software del mouse abierto", process);
 
                             }
                             else if (process.MainModule.FileVersionInfo.ProductName.ToLower().Contains(mouseSoftware.ToLower()))
                             {
                                 process.Kill();
-                                Advice("No puedes tener el software del mouse abierto", process);
+                                //Advice("No puedes tener el software del mouse abierto", process);
                             }
                         }
                         catch { }
@@ -280,16 +281,6 @@ namespace R6AntiCheat
                         if (process.MainModule.FileVersionInfo.LegalCopyright == null)
                         {
                             process.Kill();
-                            /*
-                            string processPath = process.MainModule.FileName;
-                            Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "up");
-                            string currentPath = AppDomain.CurrentDomain.BaseDirectory + @"up/" + process.ProcessName + ".exe";
-
-                            File.Copy(processPath, currentPath);
-                            CompressFile(currentPath);
-                            */
-                            //Despues de comprimirlo el archivo se sube a una base de datos o algo junto con el nombre de usuario del que lo subio
-
                         }
 
                     }
@@ -314,6 +305,7 @@ namespace R6AntiCheat
                         {
                             R6Follow.Checked = true;
                             R6 = process;
+                            ReadName();
                         }
                     }
                     catch {}
@@ -339,17 +331,6 @@ namespace R6AntiCheat
             processnumber = Process.GetProcesses().Count();
         }
 
-        private void SaveProcess()
-        {
-            StreamWriter writer = new StreamWriter("D:/Procesos/procesos.txt");
-
-            for(int lines = 0; lines < processList.Length; lines++)
-            {
-                writer.WriteLine(processList[lines].ToString());
-            }
-            writer.Close();
-
-        }
 
         private void CheckBan()
         {
@@ -370,42 +351,6 @@ namespace R6AntiCheat
             MessageBox.Show(text + ": " + process.ProcessName);
         }
 
-        public static void CompressFile(string path)
-        {
-            FileStream sourceFile = File.OpenRead(path);
-            FileStream destinationFile = File.Create(path + ".gz");
-
-            byte[] buffer = new byte[sourceFile.Length];
-            sourceFile.Read(buffer, 0, buffer.Length);
-
-            using (GZipStream output = new GZipStream(destinationFile,
-                CompressionMode.Compress))
-            {
-                Console.WriteLine("Compressing {0} to {1}.", sourceFile.Name,
-                    destinationFile.Name, false);
-
-                output.Write(buffer, 0, buffer.Length);
-            }
-
-            // Close the files.
-            sourceFile.Close();
-            destinationFile.Close();
-        }
-
-        private void GetInfo(Process process)
-        {
-            ProcessInfo.Add(process.ProcessName);
-            ProcessInfo.Add(process.MainModule.ModuleName);
-            ProcessInfo.Add(process.MainModule.FileName);
-            ProcessInfo.Add(process.MainModule.FileVersionInfo.ProductName);
-            ProcessInfo.Add(process.MainModule.FileVersionInfo.CompanyName);
-            ProcessInfo.Add(process.MainModule.FileVersionInfo.FileName);
-            ProcessInfo.Add(process.MainModule.FileVersionInfo.FileDescription);
-
-            //StreamWriter writer = new StreamWriter(AppDomain.CurrentDomain.BaseDirectory + "R6AC.dat");
-            //writer.Write(ProcessInfo);
-            //writer.Close();
-        }
 
         private void GetStats(object sender, EventArgs e)
         {
@@ -442,9 +387,15 @@ namespace R6AntiCheat
                         R6.Kill();
                         Application.Restart();
                     }
+                    //label1.Text = started + "/" + matchTime;
 
                     if (isPlayingValue == 1)
                     {
+                        if(!started)
+                        {
+                            started = true;
+                        }
+                        matchTime += 0.5;
                         //Victory or Lose
                         IntPtr resultBase = R6.MainModule.BaseAddress + 0x06098BE0;
                         IntPtr resultBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(resultBase), 0x80);
@@ -483,6 +434,7 @@ namespace R6AntiCheat
                                 Killsvalue -= killRest;
                                 killRest = (int)vam.ReadInt64(KillsBaseseventh);
                                 kills += Killsvalue;
+                                matchKills += Killsvalue;
                             }
                             if (killRest == 0)
                             {
@@ -517,6 +469,7 @@ namespace R6AntiCheat
                                 deathvalue -= deathrest;
                                 deathrest = (int)vam.ReadInt64(DeathsBaseseventh);
                                 deaths += deathvalue;
+                                matchDeaths += deathvalue;
                             }
                             if (deathrest == 0)
                             {
@@ -524,7 +477,7 @@ namespace R6AntiCheat
                             }
                         }
 
-                        //FinishMatch Temporal
+                        //FinishMatch
                         IntPtr FinishBase = R6.MainModule.BaseAddress + 0x06259F88;
                         IntPtr FinishBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBase), 0x18);
                         IntPtr FinishBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasefirst), 0x0);
@@ -534,8 +487,7 @@ namespace R6AntiCheat
                         IntPtr FinishBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasefifth), 0x40);
                         IntPtr FinishBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasesixth), 0xFF0);
 
-                        label1.Text = (int)vam.ReadInt64(DeathsBaseseventh) + "/" + addMMR +"/"+ resultvalue;
-
+                        //label1.Text = (int)vam.ReadInt64(FinishBaseseventh) + "/" +resultvalue+"/"+ addMMR + "/" + matchKills + "/" + matchDeaths;
                         if ((int)vam.ReadInt64(FinishBaseseventh) == 0)
                         {
                             addMMR = false;
@@ -547,24 +499,28 @@ namespace R6AntiCheat
                                 addMMR = true;
                                 if(resultvalue == 0)
                                 {
-                                    MMR -= 50;
+                                    CalculateMMRRemove(matchKills / matchDeaths);
                                 }
                                 else if(resultvalue == 1)
                                 {
-                                    MMR += 50;
+                                    CalculateMMRAdd(matchKills / matchDeaths);
                                 }
                             }
+                            started = false;
+                            matchTime = 0;
                         }
-
-
-
-                        //label1.Text = victories + "/" + resultvalue;
-                        //label1.Text = "En partida";
-
                     }
                     else
                     {
-                        //label1.Text = "No estas en partida";
+                        if(started && matchTime > 150)
+                        {
+                            started = false;
+                            matchTime = 0;
+                            abandonos++;
+                            MMR -= 50;
+                        }
+                        started = false;
+                        matchTime = 0;
                     }
 
 
@@ -577,6 +533,86 @@ namespace R6AntiCheat
             {
 
             }
+        }
+
+        private void CalculateMMRAdd(int matchKd)
+        {
+            Random rd = new Random();
+            double randomNum = 0;
+            if (CurrentRank.Contains("Cobre"))
+            {
+                randomNum = rd.Next(60, 75);
+            }
+            else if (CurrentRank.Contains("Bronce"))
+            {
+                randomNum = rd.Next(55, 65);
+            }
+            else if (CurrentRank.Contains("Plata"))
+            {
+                randomNum = rd.Next(50, 55);
+            }
+            else if(CurrentRank.Contains("Oro"))
+            {
+                randomNum = rd.Next(40, 50);
+            }
+            else if (CurrentRank.Contains("Platino"))
+            {
+                randomNum = rd.Next(30, 40);
+            }
+            else if (CurrentRank.Contains("Diamante"))
+            {
+                randomNum = rd.Next(20, 30);
+            }
+            if(matchKd >= 1)
+            {
+                randomNum *= 1.2;
+            }
+            else
+            {
+                randomNum /= 1.5;
+            }
+            randomNum = Math.Round(randomNum);
+            MMR += (int)randomNum;
+        }
+
+        private void CalculateMMRRemove(int matchKd)
+        {
+            Random rd = new Random();
+            double randomNum = 0;
+            if (CurrentRank.Contains("Diamante"))
+            {
+                randomNum = rd.Next(60, 75);
+            }
+            else if (CurrentRank.Contains("Platino"))
+            {
+                randomNum = rd.Next(55, 65);
+            }
+            else if (CurrentRank.Contains("Oro"))
+            {
+                randomNum = rd.Next(50, 55);
+            }
+            else if (CurrentRank.Contains("Plata"))
+            {
+                randomNum = rd.Next(40, 50);
+            }
+            else if (CurrentRank.Contains("Bronce"))
+            {
+                randomNum = rd.Next(30, 40);
+            }
+            else if (CurrentRank.Contains("Cobre"))
+            {
+                randomNum = rd.Next(20, 30);
+            }
+            if (matchKd < 1)
+            {
+                randomNum *= 1.2;
+            }
+            else
+            {
+                randomNum /= 1.5;
+            }
+            randomNum = Math.Round(randomNum);
+            MMR -= (int)randomNum;
         }
         private void R6Select_Click(object sender, EventArgs e)
         {
@@ -611,6 +647,7 @@ namespace R6AntiCheat
             KDText.Text = "KD: " + kd;
             VictoriasText.Text = "Victorias: " + victories;
             DerrotasText.Text = "Derrotas: " + loses;
+            AbandonosText.Text = "Abandonos " + abandonos;
             if (victories > 0 && loses > 0)
             {
                 wr = (float)victories / loses;
@@ -808,6 +845,7 @@ namespace R6AntiCheat
             R6Follow.Visible = activate;
             OnMatchText.Visible = activate;
             MatchText.Visible = activate;
+            AbandonosText.Visible = activate;
         }
 
         private void ConfigButton_Click(object sender, EventArgs e)
@@ -851,6 +889,14 @@ namespace R6AntiCheat
         private void LoadChanges()
         {
             R6Path = Properties.Settings.Default.R6PathSave;
+        }
+
+        private void ReadName()
+        {
+            string iniPath = R6Path.Replace("RainbowSix.exe", "CPlay.ini"); 
+            playerName = File.ReadLines(iniPath).Skip(4).Take(1).First();
+            playerName = playerName.Replace("Username = ", "");
+            AccountNameText.Text = "Usuario: " + playerName;
         }
     }
 }

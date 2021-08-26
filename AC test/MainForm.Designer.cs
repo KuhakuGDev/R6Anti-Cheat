@@ -67,7 +67,7 @@ namespace R6AntiCheat
             this.SaveChangesButton = new System.Windows.Forms.Button();
             this.OnMatchText = new System.Windows.Forms.CheckBox();
             this.MatchText = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.AbandonosText = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StatsBackGround)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RankImage)).BeginInit();
             this.SuspendLayout();
@@ -145,7 +145,7 @@ namespace R6AntiCheat
             this.TimePlayedText.AutoSize = true;
             this.TimePlayedText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TimePlayedText.ForeColor = System.Drawing.Color.Snow;
-            this.TimePlayedText.Location = new System.Drawing.Point(61, 364);
+            this.TimePlayedText.Location = new System.Drawing.Point(61, 404);
             this.TimePlayedText.Name = "TimePlayedText";
             this.TimePlayedText.Size = new System.Drawing.Size(118, 20);
             this.TimePlayedText.TabIndex = 33;
@@ -350,9 +350,9 @@ namespace R6AntiCheat
             this.VersionText.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.VersionText.Location = new System.Drawing.Point(207, 626);
             this.VersionText.Name = "VersionText";
-            this.VersionText.Size = new System.Drawing.Size(38, 13);
+            this.VersionText.Size = new System.Drawing.Size(29, 13);
             this.VersionText.TabIndex = 40;
-            this.VersionText.Text = "V0.9.5";
+            this.VersionText.Text = "V1.0";
             this.VersionText.Visible = false;
             // 
             // CreatedByText
@@ -372,7 +372,7 @@ namespace R6AntiCheat
             this.AccountStateText.AutoSize = true;
             this.AccountStateText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AccountStateText.ForeColor = System.Drawing.Color.Snow;
-            this.AccountStateText.Location = new System.Drawing.Point(65, 619);
+            this.AccountStateText.Location = new System.Drawing.Point(63, 619);
             this.AccountStateText.Name = "AccountStateText";
             this.AccountStateText.Size = new System.Drawing.Size(209, 20);
             this.AccountStateText.TabIndex = 43;
@@ -385,9 +385,9 @@ namespace R6AntiCheat
             this.AccountNameText.ForeColor = System.Drawing.Color.Snow;
             this.AccountNameText.Location = new System.Drawing.Point(65, 582);
             this.AccountNameText.Name = "AccountNameText";
-            this.AccountNameText.Size = new System.Drawing.Size(164, 20);
+            this.AccountNameText.Size = new System.Drawing.Size(72, 20);
             this.AccountNameText.TabIndex = 44;
-            this.AccountNameText.Text = "Nombre de la cuenta: ";
+            this.AccountNameText.Text = "Usuario: ";
             // 
             // FollowR6Text
             // 
@@ -479,16 +479,16 @@ namespace R6AntiCheat
             this.MatchText.TabIndex = 49;
             this.MatchText.Text = "En partida";
             // 
-            // label1
+            // AbandonosText
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Black;
-            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(729, 194);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 50;
-            this.label1.Text = "En partida";
+            this.AbandonosText.AutoSize = true;
+            this.AbandonosText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AbandonosText.ForeColor = System.Drawing.Color.Snow;
+            this.AbandonosText.Location = new System.Drawing.Point(62, 365);
+            this.AbandonosText.Name = "AbandonosText";
+            this.AbandonosText.Size = new System.Drawing.Size(95, 20);
+            this.AbandonosText.TabIndex = 51;
+            this.AbandonosText.Text = "Abandonos:";
             // 
             // Ahook
             // 
@@ -499,7 +499,7 @@ namespace R6AntiCheat
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1188, 696);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.AbandonosText);
             this.Controls.Add(this.MatchText);
             this.Controls.Add(this.OnMatchText);
             this.Controls.Add(this.SaveChangesButton);
@@ -584,7 +584,7 @@ namespace R6AntiCheat
         private System.Windows.Forms.Button SaveChangesButton;
         private System.Windows.Forms.CheckBox OnMatchText;
         private System.Windows.Forms.Label MatchText;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label AbandonosText;
     }
 }
 
