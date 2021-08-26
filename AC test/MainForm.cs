@@ -17,7 +17,7 @@ using System.IO.Compression;
 using System.Threading;
 using System.Runtime.InteropServices;
 
-namespace AC_test
+namespace R6AntiCheat
 {
     public partial class Ahook : Form
     {
@@ -56,14 +56,15 @@ namespace AC_test
         public float MMR = 2300;
       
         //Stats
-        public int kills = 5, deaths = 2, victories = 6, loses = 4;
-        public double kd, wr, matchKD = 1, hoursPlayed = 3, minutsPlayed;
+        public int kills, deaths, deathstemp, victories, loses, killRest, deathrest;
+        public double kd, wr, matchKD = 1, hoursPlayed, minutsPlayed;
 
-        public int Killsvalue, deathsvalue, resultvalue, isPlayingValue;
+        public int Killsvalue, deathsvaluetemp, resultvalue, isPlayingValue, deathvalue;
 
         public string CurrentRank;
 
-        bool overlayshowed = false;
+        public bool addMMR = false;
+
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
         (
@@ -87,7 +88,6 @@ namespace AC_test
             NewCloseButton.FlatAppearance.BorderColor = BackColor;
             NewMinimizeBut.FlatAppearance.BorderColor = BackColor;
             StartButton.FlatAppearance.BorderSize = 0;
-            StartButton.FlatAppearance.MouseOverBackColor = Color.Transparent;
             CreateTooltips();
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -203,9 +203,9 @@ namespace AC_test
                                 {
                                     if (process.ToString().ToLower().Contains(cheat.ToLower()) && process.MainModule.FileName.ToLower().Contains(cheat.ToLower()))
                                     {
-                                        process.Kill();
+                                        //process.Kill();
                                         Advice("Has sido baneado del servicio. Motivo", process);
-                                        isBanned = true;
+                                        //isBanned = true;
                                         break;
                                     }
                                 }
@@ -411,24 +411,37 @@ namespace AC_test
         {
             try
             {
-
-
                 if (R6 != null && isActivated)
                 {
                     VAMemory vam = new VAMemory(R6.ProcessName);
 
                     //On match?
-                    IntPtr matchBase = R6.MainModule.BaseAddress + 0x05CAABA0;
-                    IntPtr matchBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(matchBase), 0x28);
-                    IntPtr matchBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefirst), 0x0);
-                    IntPtr matchBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasesecond), 0x18);
-                    IntPtr matchBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasethird), 0x38);
-                    IntPtr matchBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefourth), 0x88);
-                    IntPtr matchBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefifth), 0x10);
-                    IntPtr matchBaseventh = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasesixth), 0x830);
+                    IntPtr matchBase = R6.MainModule.BaseAddress + 0x05CAD1F8;
+                    IntPtr matchBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(matchBase), 0x30);
+                    IntPtr matchBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefirst), 0x28);
+                    IntPtr matchBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasesecond), 0x48);
+                    IntPtr matchBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasethird), 0x60);
+                    IntPtr matchBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefourth), 0x38);
+                    IntPtr matchBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasefifth), 0x28);
+                    IntPtr matchBaseventh = IntPtr.Add((IntPtr)vam.ReadInt64(matchBasesixth), 0x80);
 
 
                     isPlayingValue = (int)vam.ReadInt64(matchBaseventh);
+
+                    if(isPlayingValue == 0)
+                    {
+                        OnMatchText.Checked = false;
+                    }
+                    else if (isPlayingValue == 1)
+                    {
+                        OnMatchText.Checked = true;
+                    }
+                    else if (isPlayingValue > 1)
+                    {
+                        MessageBox.Show("El juego tiene que estar en pantalla completa para que las estadísticas funcionen.");
+                        R6.Kill();
+                        Application.Restart();
+                    }
 
                     if (isPlayingValue == 1)
                     {
@@ -445,60 +458,104 @@ namespace AC_test
                         resultvalue = (int)vam.ReadInt64(resultBaseseventh);
 
                         //Kills
-                        IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05EF5478;
+                        IntPtr KillsBase = R6.MainModule.BaseAddress + 0x05D93D80;
                         IntPtr KillsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBase), 0x10);
-                        IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0xA8);
+                        IntPtr KillsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefirst), 0x5A0);
                         IntPtr KillsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesecond), 0x10);
-                        IntPtr KillsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasethird), 0x8);
-                        IntPtr KillsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefourth), 0x8);
-                        IntPtr KillsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefifth), 0x38);
-                        IntPtr KillsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesixth), 0x1E0);
+                        IntPtr KillsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasethird), 0x10);
+                        IntPtr KillsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefourth), 0x88);
+                        IntPtr KillsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasefifth), 0x20);
+                        IntPtr KillsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(KillsBasesixth), 0x54);
 
-                        if (vam.ReadInt64(KillsBaseseventh) == 0 && Killsvalue > 0.1 && Killsvalue < 25)
+
+                        if(killRest > (int)vam.ReadInt64(KillsBaseseventh) && (int)vam.ReadInt64(KillsBaseseventh) > 0)
                         {
-                            kills += Killsvalue;
+                            killRest = 0;
                         }
+
                         if ((int)vam.ReadInt64(KillsBaseseventh) >= 0 && (int)vam.ReadInt64(KillsBaseseventh) < 25)
                         {
                             Killsvalue = (int)vam.ReadInt64(KillsBaseseventh);
+
+
+                            if (killRest < (int)vam.ReadInt64(KillsBaseseventh))
+                            {
+                                Killsvalue -= killRest;
+                                killRest = (int)vam.ReadInt64(KillsBaseseventh);
+                                kills += Killsvalue;
+                            }
+                            if (killRest == 0)
+                            {
+                                killRest = Killsvalue;
+                            }
                         }
 
-
-
-                        //Deaths
-                        IntPtr DeathsBase = R6.MainModule.BaseAddress + 0x071B7A60;
+                        //Death
+                        IntPtr DeathsBase = R6.MainModule.BaseAddress + 0x05D93D80;
                         IntPtr DeathsBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBase), 0x10);
-                        IntPtr DeathsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefirst), 0x38);
-                        IntPtr DeathsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesecond), 0x290);
-                        IntPtr DeathsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasethird), 0x0);
-                        IntPtr DeathsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefourth), 0x98);
+                        IntPtr DeathsBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefirst), 0x5A0);
+                        IntPtr DeathsBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesecond), 0x10);
+                        IntPtr DeathsBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasethird), 0x8);
+                        IntPtr DeathsBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefourth), 0x88);
                         IntPtr DeathsBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasefifth), 0x20);
-                        IntPtr DeathsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesixth), 0x70);
+                        IntPtr DeathsBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(DeathsBasesixth), 0x74);
 
-                        if (vam.ReadInt64(DeathsBaseseventh) == 0 && deathsvalue > 0.1 && deathsvalue < 25)
+                        //label1.Text = deathvalue + "/" + (int)vam.ReadInt64(DeathsBaseseventh) + "/" + deathrest;
+
+                        if (deathrest > (int)vam.ReadInt64(DeathsBaseseventh) && (int)vam.ReadInt64(DeathsBaseseventh) > 0)
                         {
-                            deaths += deathsvalue;
-
-                            if (resultvalue == 0)
-                            {
-                                loses++;
-                                MMR -= 50;
-                            }
-                            if (resultvalue == 1)
-                            {
-                                victories++;
-                                MMR += 50;
-                            }
+                            deathrest = 0;
                         }
+
                         if ((int)vam.ReadInt64(DeathsBaseseventh) >= 0 && (int)vam.ReadInt64(DeathsBaseseventh) < 25)
                         {
-                            deathsvalue = (int)vam.ReadInt64(DeathsBaseseventh);
+                            deathvalue = (int)vam.ReadInt64(DeathsBaseseventh);
+
+
+                            if (deathrest < (int)vam.ReadInt64(DeathsBaseseventh))
+                            {
+                                deathvalue -= deathrest;
+                                deathrest = (int)vam.ReadInt64(DeathsBaseseventh);
+                                deaths += deathvalue;
+                            }
+                            if (deathrest == 0)
+                            {
+                                deathrest = Killsvalue;
+                            }
                         }
 
-                        if (deathsvalue > 0 && Killsvalue > 0)
+                        //FinishMatch Temporal
+                        IntPtr FinishBase = R6.MainModule.BaseAddress + 0x06259F88;
+                        IntPtr FinishBasefirst = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBase), 0x18);
+                        IntPtr FinishBasesecond = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasefirst), 0x0);
+                        IntPtr FinishBasethird = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasesecond), 0x0);
+                        IntPtr FinishBasefourth = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasethird), 0x48);
+                        IntPtr FinishBasefifth = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasefourth), 0x30);
+                        IntPtr FinishBasesixth = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasefifth), 0x40);
+                        IntPtr FinishBaseseventh = IntPtr.Add((IntPtr)vam.ReadInt64(FinishBasesixth), 0xFF0);
+
+                        label1.Text = (int)vam.ReadInt64(DeathsBaseseventh) + "/" + addMMR +"/"+ resultvalue;
+
+                        if ((int)vam.ReadInt64(FinishBaseseventh) == 0)
                         {
-                            matchKD = kills / deaths;
+                            addMMR = false;
                         }
+                        else
+                        {
+                            if(!addMMR)
+                            {
+                                addMMR = true;
+                                if(resultvalue == 0)
+                                {
+                                    MMR -= 50;
+                                }
+                                else if(resultvalue == 1)
+                                {
+                                    MMR += 50;
+                                }
+                            }
+                        }
+
 
 
                         //label1.Text = victories + "/" + resultvalue;
@@ -518,36 +575,9 @@ namespace AC_test
                 }
             }catch
             {
-                MessageBox.Show("No cierres el juego sin desactivar el antihook");
-                Application.Exit();
+
             }
         }
-
-        private void StatsText_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void KillsText_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void DeathsText_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void KDText_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void VictoriasText_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void R6Select_Click(object sender, EventArgs e)
         {
             int size = -1;
@@ -577,7 +607,7 @@ namespace AC_test
                 kd = Math.Round(kd, 1);
             }
             KillsText.Text = "Kills: " + kills;
-            DeathsText.Text = "Deaths: " + deaths;
+            DeathsText.Text = "Muertes: " + deaths;
             KDText.Text = "KD: " + kd;
             VictoriasText.Text = "Victorias: " + victories;
             DerrotasText.Text = "Derrotas: " + loses;
@@ -722,10 +752,6 @@ namespace AC_test
                 CurrentRank = "Diamante";
                 RankImage.Image = Properties.Resources.Diamond;
             }
-
-            if (MMR < 2600)
-            {
-            }
         }
 
 
@@ -780,6 +806,8 @@ namespace AC_test
             AccountNameText.Visible = activate;
             FollowR6Text.Visible = activate;
             R6Follow.Visible = activate;
+            OnMatchText.Visible = activate;
+            MatchText.Visible = activate;
         }
 
         private void ConfigButton_Click(object sender, EventArgs e)

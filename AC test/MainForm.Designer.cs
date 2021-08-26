@@ -1,5 +1,5 @@
 ﻿
-namespace AC_test
+namespace R6AntiCheat
 {
     partial class Ahook
     {
@@ -65,6 +65,9 @@ namespace AC_test
             this.StartButton = new System.Windows.Forms.Button();
             this.ScanBar = new CircularProgressBar.CircularProgressBar();
             this.SaveChangesButton = new System.Windows.Forms.Button();
+            this.OnMatchText = new System.Windows.Forms.CheckBox();
+            this.MatchText = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StatsBackGround)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RankImage)).BeginInit();
             this.SuspendLayout();
@@ -84,7 +87,7 @@ namespace AC_test
             // Stats
             // 
             this.Stats.Enabled = true;
-            this.Stats.Interval = 1000;
+            this.Stats.Interval = 500;
             this.Stats.Tick += new System.EventHandler(this.GetStats);
             // 
             // NewCloseButton
@@ -117,7 +120,7 @@ namespace AC_test
             // StatsButton
             // 
             this.StatsButton.BackColor = System.Drawing.Color.Black;
-            this.StatsButton.BackgroundImage = global::AC_test.Properties.Resources.Statspng;
+            this.StatsButton.BackgroundImage = global::R6AntiCheat.Properties.Resources.Statspng;
             this.StatsButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.StatsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StatsButton.Location = new System.Drawing.Point(1, 35);
@@ -210,7 +213,6 @@ namespace AC_test
             this.VictoriasText.Size = new System.Drawing.Size(74, 20);
             this.VictoriasText.TabIndex = 27;
             this.VictoriasText.Text = "Victorias:";
-            this.VictoriasText.Click += new System.EventHandler(this.VictoriasText_Click);
             // 
             // KDText
             // 
@@ -222,7 +224,6 @@ namespace AC_test
             this.KDText.Size = new System.Drawing.Size(39, 20);
             this.KDText.TabIndex = 26;
             this.KDText.Text = "KD: ";
-            this.KDText.Click += new System.EventHandler(this.KDText_Click);
             // 
             // DeathsText
             // 
@@ -234,7 +235,6 @@ namespace AC_test
             this.DeathsText.Size = new System.Drawing.Size(65, 20);
             this.DeathsText.TabIndex = 25;
             this.DeathsText.Text = "Deaths:";
-            this.DeathsText.Click += new System.EventHandler(this.DeathsText_Click);
             // 
             // StatsText
             // 
@@ -246,7 +246,6 @@ namespace AC_test
             this.StatsText.Size = new System.Drawing.Size(128, 25);
             this.StatsText.TabIndex = 24;
             this.StatsText.Text = "Stats (Beta)";
-            this.StatsText.Click += new System.EventHandler(this.StatsText_Click);
             // 
             // KillsText
             // 
@@ -258,11 +257,10 @@ namespace AC_test
             this.KillsText.Size = new System.Drawing.Size(44, 20);
             this.KillsText.TabIndex = 23;
             this.KillsText.Text = "Kills: ";
-            this.KillsText.Click += new System.EventHandler(this.KillsText_Click);
             // 
             // ConfigButton
             // 
-            this.ConfigButton.BackgroundImage = global::AC_test.Properties.Resources.Options;
+            this.ConfigButton.BackgroundImage = global::R6AntiCheat.Properties.Resources.Options;
             this.ConfigButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ConfigButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ConfigButton.Location = new System.Drawing.Point(2, 91);
@@ -450,7 +448,7 @@ namespace AC_test
             // 
             // SaveChangesButton
             // 
-            this.SaveChangesButton.Location = new System.Drawing.Point(66, 229);
+            this.SaveChangesButton.Location = new System.Drawing.Point(65, 229);
             this.SaveChangesButton.Name = "SaveChangesButton";
             this.SaveChangesButton.Size = new System.Drawing.Size(96, 23);
             this.SaveChangesButton.TabIndex = 47;
@@ -458,6 +456,39 @@ namespace AC_test
             this.SaveChangesButton.UseVisualStyleBackColor = true;
             this.SaveChangesButton.Visible = false;
             this.SaveChangesButton.Click += new System.EventHandler(this.SaveChangesButton_Click);
+            // 
+            // OnMatchText
+            // 
+            this.OnMatchText.AutoSize = true;
+            this.OnMatchText.Enabled = false;
+            this.OnMatchText.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.OnMatchText.Location = new System.Drawing.Point(196, 172);
+            this.OnMatchText.Name = "OnMatchText";
+            this.OnMatchText.Size = new System.Drawing.Size(15, 14);
+            this.OnMatchText.TabIndex = 48;
+            this.OnMatchText.UseVisualStyleBackColor = true;
+            // 
+            // MatchText
+            // 
+            this.MatchText.AutoSize = true;
+            this.MatchText.BackColor = System.Drawing.Color.Black;
+            this.MatchText.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.MatchText.Location = new System.Drawing.Point(222, 172);
+            this.MatchText.Name = "MatchText";
+            this.MatchText.Size = new System.Drawing.Size(55, 13);
+            this.MatchText.TabIndex = 49;
+            this.MatchText.Text = "En partida";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Black;
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(729, 194);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.TabIndex = 50;
+            this.label1.Text = "En partida";
             // 
             // Ahook
             // 
@@ -468,6 +499,9 @@ namespace AC_test
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1188, 696);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.MatchText);
+            this.Controls.Add(this.OnMatchText);
             this.Controls.Add(this.SaveChangesButton);
             this.Controls.Add(this.ScanBar);
             this.Controls.Add(this.FollowR6Text);
@@ -548,6 +582,9 @@ namespace AC_test
         private System.Windows.Forms.Button StartButton;
         private CircularProgressBar.CircularProgressBar ScanBar;
         private System.Windows.Forms.Button SaveChangesButton;
+        private System.Windows.Forms.CheckBox OnMatchText;
+        private System.Windows.Forms.Label MatchText;
+        private System.Windows.Forms.Label label1;
     }
 }
 

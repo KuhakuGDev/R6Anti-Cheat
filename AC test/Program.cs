@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AC_test
+namespace R6AntiCheat
 {
     static class Program
     {
