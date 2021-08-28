@@ -68,6 +68,7 @@ namespace R6AntiCheat
             this.OnMatchText = new System.Windows.Forms.CheckBox();
             this.MatchText = new System.Windows.Forms.Label();
             this.AbandonosText = new System.Windows.Forms.Label();
+            this.MMRChange = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.StatsBackGround)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RankImage)).BeginInit();
             this.SuspendLayout();
@@ -336,7 +337,7 @@ namespace R6AntiCheat
             this.AboutText.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutText.ForeColor = System.Drawing.Color.White;
             this.AboutText.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.AboutText.Location = new System.Drawing.Point(65, 451);
+            this.AboutText.Location = new System.Drawing.Point(65, 481);
             this.AboutText.Name = "AboutText";
             this.AboutText.Size = new System.Drawing.Size(340, 147);
             this.AboutText.TabIndex = 39;
@@ -490,6 +491,16 @@ namespace R6AntiCheat
             this.AbandonosText.TabIndex = 51;
             this.AbandonosText.Text = "Abandonos:";
             // 
+            // MMRChange
+            // 
+            this.MMRChange.AutoSize = true;
+            this.MMRChange.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MMRChange.ForeColor = System.Drawing.Color.Snow;
+            this.MMRChange.Location = new System.Drawing.Point(305, 531);
+            this.MMRChange.Name = "MMRChange";
+            this.MMRChange.Size = new System.Drawing.Size(0, 13);
+            this.MMRChange.TabIndex = 52;
+            // 
             // Ahook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -499,6 +510,7 @@ namespace R6AntiCheat
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1188, 696);
+            this.Controls.Add(this.MMRChange);
             this.Controls.Add(this.AbandonosText);
             this.Controls.Add(this.MatchText);
             this.Controls.Add(this.OnMatchText);
@@ -585,6 +597,7 @@ namespace R6AntiCheat
         private System.Windows.Forms.CheckBox OnMatchText;
         private System.Windows.Forms.Label MatchText;
         private System.Windows.Forms.Label AbandonosText;
+        private System.Windows.Forms.Label MMRChange;
     }
 }
 

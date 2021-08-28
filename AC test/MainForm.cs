@@ -492,7 +492,7 @@ namespace R6AntiCheat
                         {
                             addMMR = false;
                         }
-                        else
+                        else if((int)vam.ReadInt64(FinishBaseseventh) == 1)
                         {
                             if(!addMMR)
                             {
@@ -512,7 +512,7 @@ namespace R6AntiCheat
                     }
                     else
                     {
-                        if(started && matchTime > 150)
+                        if(started && matchTime > 300)
                         {
                             started = false;
                             matchTime = 0;
@@ -573,6 +573,7 @@ namespace R6AntiCheat
             }
             randomNum = Math.Round(randomNum);
             MMR += (int)randomNum;
+            MMRChange.Text = "+" + (int)randomNum;
         }
 
         private void CalculateMMRRemove(int matchKd)
@@ -613,6 +614,7 @@ namespace R6AntiCheat
             }
             randomNum = Math.Round(randomNum);
             MMR -= (int)randomNum;
+            MMRChange.Text = "-" + (int)randomNum;
         }
         private void R6Select_Click(object sender, EventArgs e)
         {
@@ -846,6 +848,7 @@ namespace R6AntiCheat
             OnMatchText.Visible = activate;
             MatchText.Visible = activate;
             AbandonosText.Visible = activate;
+            MMRChange.Visible = activate;
         }
 
         private void ConfigButton_Click(object sender, EventArgs e)
